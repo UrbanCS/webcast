@@ -1,12 +1,9 @@
-```markdown
 # Lifstories Broadcast
 
-PHP/MySQL webcast module ready for cPanel, designed to manage the lifecycle of a YouTube Live broadcast, display the replay afterward, and provide a download link if needed. The project remains standalone for easy deployment, while offering integration paths for WordPress and Joomla.
+Module webcast PHP/MySQL prêt pour cPanel, conçu pour piloter le cycle de vie d’une diffusion YouTube Live, afficher la rediffusion ensuite, et proposer un lien de téléchargement si nécessaire. Le projet reste autonome pour être simple à déployer, tout en offrant des chemins d’intégration WordPress et Joomla.
 
-## Structure
-
-```
-
+## Arborescence
+text
 lifstories-broadcast/
 ├── .htaccess
 ├── admin.php
@@ -53,44 +50,37 @@ lifstories-broadcast/
 │       ├── js/
 │       └── uploads/
 └── storage/
-├── cache/
-├── logs/
-└── uploads/
+    ├── cache/
+    ├── logs/
+    └── uploads/
 
-```
+## Fonctionnalités livrées
+- CRUD complet des diffusions.
+- Publication et dépublication.
+- Statuts automatiques et override manuel.
+- Pages publiques responsive.
+- Embed YouTube Live / replay.
+- Bouton de téléchargement via URL ou fichier local sécurisé.
+- Connexion admin autonome avec session PHP, hash de mot de passe et rate limiting.
+- Adaptateurs d’authentification WordPress/Joomla quand le bootstrap CMS est configuré.
 
-## Features Delivered
-
-- Full CRUD for broadcasts  
-- Publish and unpublish functionality  
-- Automatic status handling with manual override  
-- Responsive public pages  
-- YouTube Live / replay embedding  
-- Download button via URL or secure local file  
-- Standalone admin authentication with PHP sessions, password hashing, and rate limiting  
-- WordPress/Joomla authentication adapters when CMS bootstrap is configured  
-
-## Quick Start
-
-1. Upload the folder to cPanel  
-2. Import `database/install.sql` in phpMyAdmin  
-3. Update `config/config.php`  
-4. Open `login.php`  
-5. Log in with `admin@example.com / ChangeMe!123`, then update these credentials in the config  
+## Mise en route rapide
+1. Uploadez le dossier sur cPanel.
+2. Importez database/install.sql dans phpMyAdmin.
+3. Mettez à jour config/config.php.
+4. Ouvrez login.php.
+5. Connectez-vous avec admin@example.com / ChangeMe!123, puis changez ces valeurs dans la config.
 
 ## Documentation
+- Vue d’ensemble : docs/project-overview.md
+- Installation cPanel : docs/cpanel-installation.md
+- WordPress : docs/wordpress-integration.md
+- Joomla : docs/joomla-integration.md
+- Sécurité : docs/security-notes.md
+- Dépannage : docs/troubleshooting.md
+- Checklist : docs/deployment-checklist.md
 
-- Overview: `docs/project-overview.md`  
-- cPanel installation: `docs/cpanel-installation.md`  
-- WordPress: `docs/wordpress-integration.md`  
-- Joomla: `docs/joomla-integration.md`  
-- Security: `docs/security-notes.md`  
-- Troubleshooting: `docs/troubleshooting.md`  
-- Checklist: `docs/deployment-checklist.md`  
-
-## Design Decisions
-
-- No full WordPress plugin or Joomla extension: the core remains a standalone module  
-- No custom video backend: ingestion and streaming are handled by YouTube Live  
-- No complex custom auth system: standalone mode is intentionally minimal, otherwise the CMS handles authentication  
-```
+## Décisions de conception
+- Pas de plugin WordPress complet ni d’extension Joomla complète : le cœur reste un module autonome.
+- Pas de backend vidéo custom : l’ingestion et la diffusion sont gérées par YouTube Live.
+- Pas de système d’auth maison complexe : le mode autonome est volontairement minimal, sinon le CMS peut porter l’authentification.
