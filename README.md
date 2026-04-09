@@ -2,8 +2,9 @@
 
 Module webcast PHP/MySQL prêt pour cPanel, conçu pour piloter le cycle de vie d’une diffusion YouTube Live, afficher la rediffusion ensuite, et proposer un lien de téléchargement si nécessaire. Le projet reste autonome pour être simple à déployer, tout en offrant des chemins d’intégration WordPress et Joomla.
 
-## Arborescence
-text
+## Structure
+
+
 lifstories-broadcast/
 ├── .htaccess
 ├── admin.php
@@ -13,46 +14,46 @@ lifstories-broadcast/
 ├── login.php
 ├── logout.php
 ├── admin/
-│   ├── index.php
-│   └── events/
-│       ├── create/index.php
-│       ├── delete.php
-│       ├── edit/index.php
-│       ├── index.php
-│       └── toggle-publish.php
+│ ├── index.php
+│ └── events/
+│ ├── create/index.php
+│ ├── delete.php
+│ ├── edit/index.php
+│ ├── index.php
+│ └── toggle-publish.php
 ├── app/
-│   ├── Controllers/
-│   ├── Helpers/
-│   ├── Models/
-│   ├── Services/
-│   └── Views/
+│ ├── Controllers/
+│ ├── Helpers/
+│ ├── Models/
+│ ├── Services/
+│ └── Views/
 ├── config/
-│   ├── config.example.php
-│   ├── config.php
-│   └── lang/fr.php
+│ ├── config.example.php
+│ ├── config.php
+│ └── lang/fr.php
 ├── database/
-│   ├── install.sql
-│   ├── sample-data.sql
-│   └── schema.sql
+│ ├── install.sql
+│ ├── sample-data.sql
+│ └── schema.sql
 ├── docs/
-│   ├── cpanel-installation.md
-│   ├── deployment-checklist.md
-│   ├── joomla-integration.md
-│   ├── local-testing.md
-│   ├── project-overview.md
-│   ├── security-notes.md
-│   ├── troubleshooting.md
-│   ├── wordpress-integration.md
-│   └── snippets/
+│ ├── cpanel-installation.md
+│ ├── deployment-checklist.md
+│ ├── joomla-integration.md
+│ ├── local-testing.md
+│ ├── project-overview.md
+│ ├── security-notes.md
+│ ├── troubleshooting.md
+│ ├── wordpress-integration.md
+│ └── snippets/
 ├── public/
-│   └── assets/
-│       ├── css/
-│       ├── js/
-│       └── uploads/
+│ └── assets/
+│ ├── css/
+│ ├── js/
+│ └── uploads/
 └── storage/
-    ├── cache/
-    ├── logs/
-    └── uploads/
+├── cache/
+├── logs/
+└── uploads/
 
 ## Fonctionnalités livrées
 - CRUD complet des diffusions.
