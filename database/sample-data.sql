@@ -1,0 +1,48 @@
+INSERT INTO `broadcast_events` (
+  `title`,
+  `slug`,
+  `description`,
+  `start_at`,
+  `duration_minutes`,
+  `timezone`,
+  `youtube_live_input`,
+  `youtube_live_video_id`,
+  `youtube_replay_input`,
+  `youtube_replay_video_id`,
+  `download_url`,
+  `local_file_path`,
+  `manual_status`,
+  `is_published`
+) VALUES
+(
+  'Célébration commémorative du printemps',
+  'celebration-commemorative-printemps',
+  'Exemple de diffusion planifiée avec lecteur direct YouTube et bouton de téléchargement configurable.',
+  '2026-04-15 18:00:00',
+  90,
+  'America/Toronto',
+  'https://www.youtube.com/live/5qap5aO4i9A',
+  '5qap5aO4i9A',
+  NULL,
+  NULL,
+  'https://example.com/downloads/celebration-printemps.mp4',
+  NULL,
+  NULL,
+  1
+),
+(
+  'Hommage de Paris',
+  'hommage-paris',
+  'Exemple de diffusion terminée avec rediffusion publiée.',
+  '2026-03-30 17:30:00',
+  60,
+  'Europe/Paris',
+  'https://youtu.be/dQw4w9WgXcQ',
+  'dQw4w9WgXcQ',
+  'https://youtu.be/dQw4w9WgXcQ',
+  'dQw4w9WgXcQ',
+  NULL,
+  NULL,
+  NULL,
+  1
+);
