@@ -13,7 +13,14 @@ defined('LSB_APP') or exit;
         </div>
     <?php endif; ?>
 
-    <form class="admin-form admin-form--wide" method="post" action="<?= e($formAction); ?>" enctype="multipart/form-data">
+    <form
+        class="admin-form admin-form--wide"
+        method="post"
+        action="<?= e($formAction); ?>"
+        enctype="multipart/form-data"
+        data-draft-form
+        data-draft-key="<?= e($event !== null ? 'event-form-edit-' . $event['id'] : 'event-form-create'); ?>"
+    >
         <input type="hidden" name="_csrf" value="<?= e(csrf_token('event_form')); ?>">
 
         <div class="form-grid">
