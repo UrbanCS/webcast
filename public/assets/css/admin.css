@@ -239,6 +239,10 @@ a {
     width: 100%;
 }
 
+.admin-form .button-block {
+    margin-top: 0.55rem;
+}
+
 .table-wrap {
     overflow-x: auto;
 }
