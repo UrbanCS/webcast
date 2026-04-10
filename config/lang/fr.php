@@ -39,6 +39,7 @@ return [
     'replay' => 'Rediffusion disponible',
     'archived' => 'Archivée',
     'publish' => 'Publier',
+    'unpublish' => 'Dépublier',
     'save' => 'Enregistrer',
     'delete' => 'Supprimer',
     'search' => 'Recherche',

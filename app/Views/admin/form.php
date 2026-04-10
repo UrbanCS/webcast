@@ -107,7 +107,7 @@ defined('LSB_APP') or exit;
             </label>
         </div>
 
-        <div class="inline-actions">
+        <div class="inline-actions form-actions">
             <button class="button button-primary" type="submit"><?= e(lang('save')); ?></button>
             <a class="button" href="<?= e(base_url('admin.php')); ?>"><?= e(lang('dashboard')); ?></a>
         </div>

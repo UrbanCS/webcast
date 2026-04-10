@@ -89,7 +89,7 @@ defined('LSB_APP') or exit;
                                         <input type="hidden" name="_csrf" value="<?= e(csrf_token('publish_event_' . $event['id'])); ?>">
                                         <input type="hidden" name="id" value="<?= e((string) $event['id']); ?>">
                                         <input type="hidden" name="is_published" value="<?= e((string) $event['is_published']); ?>">
-                                        <button class="button button-small" type="submit"><?= e((int) $event['is_published'] === 1 ? lang('unpublished') : lang('publish')); ?></button>
+                                        <button class="button button-small" type="submit"><?= e((int) $event['is_published'] === 1 ? lang('unpublish') : lang('publish')); ?></button>
                                     </form>
                                     <form method="post" action="<?= e(base_url('admin/events/delete.php')); ?>" data-confirm="<?= e(lang('confirm_delete')); ?>">
                                         <input type="hidden" name="_csrf" value="<?= e(csrf_token('delete_event_' . $event['id'])); ?>">
