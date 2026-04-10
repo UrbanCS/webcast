@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const titleInput = document.querySelector('[data-slug-source]');
     const slugInput = document.querySelector('[data-slug-target]');
+    const searchInput = document.querySelector('[data-search-input]');
 
     const slugify = (value) => value
         .toLowerCase()
@@ -59,4 +60,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    if (searchInput) {
+        let searchTimer = null;
+
+        searchInput.addEventListener('input', () => {
+            const form = searchInput.closest('form');
+
+            if (!form) {
+                return;
+            }
+
+            window.clearTimeout(searchTimer);
+            searchTimer = window.setTimeout(() => {
+                form.submit();
+            }, 300);
+        });
+    }
 });
