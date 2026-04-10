@@ -30,7 +30,5 @@ defined('LSB_APP') or exit;
 
             <button class="button button-primary button-block" type="submit"><?= e(lang('sign_in')); ?></button>
         </form>
-        <p class="auth-note"><?= e(lang('standalone_credentials')); ?></p>
-        <p class="auth-note"><?= e(lang('login_hint')); ?></p>
     <?php endif; ?>
 </section>
