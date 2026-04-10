@@ -10,6 +10,7 @@ $flashMessages = flash_messages();
     <title><?= e($pageTitle ?? lang('app_name')); ?></title>
     <meta name="description" content="Module webcast Lifstories pour diffusions YouTube Live, replays et téléchargements.">
     <link rel="stylesheet" href="<?= e(asset_url('css/style.css')); ?>">
+    <style><?= inline_asset_contents('css/style.css'); ?></style>
 </head>
 <body class="lsb-public-body">
     <div class="site-shell">

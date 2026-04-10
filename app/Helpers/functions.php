@@ -207,6 +207,21 @@ if (!function_exists('asset_url')) {
     }
 }
 
+if (!function_exists('inline_asset_contents')) {
+    function inline_asset_contents(string $path): string
+    {
+        $relativePath = ltrim($path, '/');
+        $fullPath = APP_ROOT . '/public/assets/' . $relativePath;
+
+        if (!is_file($fullPath)) {
+            return '';
+        }
+
+        $contents = file_get_contents($fullPath);
+        return $contents === false ? '' : $contents;
+    }
+}
+
 if (!function_exists('current_url')) {
     function current_url(): string
     {

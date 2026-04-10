@@ -9,6 +9,7 @@ $flashMessages = flash_messages();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle ?? lang('login')); ?> · <?= e(lang('app_name')); ?></title>
     <link rel="stylesheet" href="<?= e(asset_url('css/admin.css')); ?>">
+    <style><?= inline_asset_contents('css/admin.css'); ?></style>
 </head>
 <body class="lsb-auth-body">
     <main class="auth-shell">
