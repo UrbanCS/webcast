@@ -94,7 +94,7 @@ return [
     'stats_live' => 'En direct',
     'stats_replay' => 'Rediffusions',
     'stats_archived' => 'Archivées',
-    'filters' => 'Filtres',
+    'filters' => 'Filtrer',
     'new_event' => 'Nouvelle diffusion',
     'manual_override' => 'Forcer un statut',
     'youtube_help' => 'Accepte une URL watch, youtu.be, live, embed ou un identifiant brut.',

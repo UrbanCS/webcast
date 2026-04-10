@@ -28,7 +28,7 @@ defined('LSB_APP') or exit;
     <form class="filters-grid" method="get" action="<?= e(base_url('admin.php')); ?>" data-filter-form>
         <label class="form-field">
             <span><?= e(lang('search')); ?></span>
-            <input type="search" name="q" value="<?= e($query); ?>" placeholder="titre, slug, description" data-search-input>
+            <input type="search" name="q" value="<?= e($query); ?>" placeholder="titre, slug, description">
         </label>
 
         <label class="form-field">
