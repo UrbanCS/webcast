@@ -173,15 +173,29 @@ document.addEventListener('DOMContentLoaded', () => {
             window.clearTimeout(draftTimer);
             draftTimer = window.setTimeout(writeDraft, 180);
         };
+        const flushDraftWrite = () => {
+            window.clearTimeout(draftTimer);
+            writeDraft();
+        };
 
         draftFields.forEach((field) => {
             field.addEventListener('input', queueDraftWrite);
-            field.addEventListener('change', queueDraftWrite);
+            field.addEventListener('change', flushDraftWrite);
         });
 
         draftForm.addEventListener('submit', () => {
+            flushDraftWrite();
+
             if (draftKey) {
                 window.sessionStorage.setItem(draftSessionKey, draftKey);
+            }
+        });
+
+        window.addEventListener('pagehide', flushDraftWrite);
+        window.addEventListener('beforeunload', flushDraftWrite);
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                flushDraftWrite();
             }
         });
     }
