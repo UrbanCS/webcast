@@ -89,7 +89,7 @@ class AdminController
         $this->auth->guardAdmin();
 
         $query = trim((string) ($_GET['q'] ?? ''));
-        $statusFilter = trim((string) ($_GET['status'] ?? ''));
+        $statusFilter = $this->normalizeStatusFilter((string) ($_GET['status'] ?? ''));
         $events = array_map(fn (array $event): array => $this->decorateEvent($event), $this->events->search($query));
 
         $stats = [
@@ -399,5 +399,28 @@ class AdminController
         }
 
         return str_starts_with($url, '/');
+    }
+
+    private function normalizeStatusFilter(string $status): string
+    {
+        $status = trim(strtolower($status));
+
+        if ($status === '') {
+            return '';
+        }
+
+        if (in_array($status, \allowed_statuses(), true)) {
+            return $status;
+        }
+
+        $translations = [
+            'diffusion prévue' => 'scheduled',
+            'en direct' => 'live',
+            'rediffusion disponible' => 'replay',
+            'archivée' => 'archived',
+            'archivee' => 'archived',
+        ];
+
+        return $translations[$status] ?? '';
     }
 }

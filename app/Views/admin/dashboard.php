@@ -25,7 +25,7 @@ defined('LSB_APP') or exit;
 </section>
 
 <section class="panel">
-    <form class="filters-grid" method="get" action="<?= e(base_url('admin.php')); ?>">
+    <form class="filters-grid" method="get" action="<?= e(base_url('admin.php')); ?>" data-filter-form>
         <label class="form-field">
             <span><?= e(lang('search')); ?></span>
             <input type="search" name="q" value="<?= e($query); ?>" placeholder="titre, slug, description">
@@ -33,7 +33,7 @@ defined('LSB_APP') or exit;
 
         <label class="form-field">
             <span><?= e(lang('filter_by_status')); ?></span>
-            <select name="status">
+            <select name="status" data-auto-submit>
                 <option value=""><?= e(lang('all_statuses')); ?></option>
                 <?php foreach (allowed_statuses() as $status): ?>
                     <option value="<?= e($status); ?>"<?= selected($statusFilter, $status); ?>><?= e(lang($status)); ?></option>
