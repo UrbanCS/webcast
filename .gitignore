@@ -1,0 +1,27 @@
+# Sensitive runtime config
+/config/config.php
+
+# Runtime data
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+
+# Optional public uploads
+/public/assets/uploads/*
+!/public/assets/uploads/.gitkeep
+
+# Local archives and backups
+*.zip
+*.tar
+*.tar.gz
+*.sql.gz
+*.bak
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
