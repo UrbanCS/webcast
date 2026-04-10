@@ -30,10 +30,17 @@ class BroadcastEvent
 
         $statement = $this->db->prepare(
             'SELECT * FROM broadcast_events
-             WHERE title LIKE :query OR slug LIKE :query OR description LIKE :query
+             WHERE title LIKE :title_query
+                OR slug LIKE :slug_query
+                OR description LIKE :description_query
              ORDER BY start_at DESC'
         );
-        $statement->execute(['query' => '%' . $query . '%']);
+        $wildcardQuery = '%' . $query . '%';
+        $statement->execute([
+            'title_query' => $wildcardQuery,
+            'slug_query' => $wildcardQuery,
+            'description_query' => $wildcardQuery,
+        ]);
         return $statement->fetchAll();
     }
 
