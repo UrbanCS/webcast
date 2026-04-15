@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `broadcast_events` (
   `youtube_replay_video_id` CHAR(11) NULL,
   `download_url` VARCHAR(255) NULL,
   `local_file_path` VARCHAR(255) NULL,
+  `access_code_hash` VARCHAR(255) NULL,
   `manual_status` ENUM('scheduled', 'live', 'replay', 'archived') NULL DEFAULT NULL,
   `is_published` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

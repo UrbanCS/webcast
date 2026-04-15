@@ -70,7 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
             draftForm.querySelectorAll('input[name], textarea[name], select[name]')
         ).filter((field) => {
             const type = (field.getAttribute('type') || '').toLowerCase();
-            return type !== 'hidden' && type !== 'file' && type !== 'submit' && type !== 'button' && type !== 'reset';
+            return !field.hasAttribute('data-no-draft')
+                && type !== 'hidden'
+                && type !== 'file'
+                && type !== 'submit'
+                && type !== 'button'
+                && type !== 'reset';
         });
 
         const readDraft = () => {

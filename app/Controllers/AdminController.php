@@ -232,6 +232,8 @@ class AdminController
             'youtube_replay_input' => trim((string) ($_POST['youtube_replay_input'] ?? '')),
             'download_url' => trim((string) ($_POST['download_url'] ?? '')),
             'local_file_path' => trim((string) ($_POST['local_file_path'] ?? '')),
+            'access_code' => trim((string) ($_POST['access_code'] ?? '')),
+            'clear_access_code' => isset($_POST['clear_access_code']) ? 1 : 0,
             'manual_status' => trim((string) ($_POST['manual_status'] ?? '')),
             'is_published' => isset($_POST['is_published']) ? 1 : 0,
         ];
@@ -294,6 +296,10 @@ class AdminController
             $errors['download_url'] = \lang('validation_download_url');
         }
 
+        if ($formData['access_code'] !== '' && strlen($formData['access_code']) < 4) {
+            $errors['access_code'] = \lang('validation_access_code');
+        }
+
         $localFilePath = null;
         if ($formData['local_file_path'] !== '') {
             $localFilePath = $this->uploadService->sanitizeRelativePath($formData['local_file_path']);
@@ -321,6 +327,15 @@ class AdminController
             $manualStatus = null;
         }
 
+        $accessCodeHash = (string) ($existing['access_code_hash'] ?? '');
+        if ((int) $formData['clear_access_code'] === 1) {
+            $accessCodeHash = '';
+        }
+
+        if ($formData['access_code'] !== '') {
+            $accessCodeHash = password_hash($formData['access_code'], PASSWORD_DEFAULT);
+        }
+
         $payload = [
             'title' => $formData['title'],
             'slug' => $formData['slug'],
@@ -334,6 +349,7 @@ class AdminController
             'youtube_replay_video_id' => $replay['video_id'],
             'download_url' => $formData['download_url'] !== '' ? $formData['download_url'] : null,
             'local_file_path' => $localFilePath,
+            'access_code_hash' => $accessCodeHash !== '' ? $accessCodeHash : null,
             'manual_status' => $manualStatus,
             'is_published' => $formData['is_published'],
         ];
@@ -369,6 +385,8 @@ class AdminController
             'youtube_replay_input' => '',
             'download_url' => '',
             'local_file_path' => '',
+            'access_code' => '',
+            'clear_access_code' => 0,
             'manual_status' => '',
             'is_published' => 1,
         ];
@@ -387,6 +405,8 @@ class AdminController
             'youtube_replay_input' => (string) ($event['youtube_replay_input'] ?? ''),
             'download_url' => (string) ($event['download_url'] ?? ''),
             'local_file_path' => (string) ($event['local_file_path'] ?? ''),
+            'access_code' => '',
+            'clear_access_code' => 0,
             'manual_status' => (string) ($event['manual_status'] ?? ''),
             'is_published' => (int) $event['is_published'],
         ];

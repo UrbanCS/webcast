@@ -98,6 +98,20 @@ defined('LSB_APP') or exit;
                 <?php if (!empty($errors['upload_file'])): ?><small class="form-error"><?= e($errors['upload_file']); ?></small><?php endif; ?>
             </label>
 
+            <label class="form-field form-field--full">
+                <span><?= e(lang('access_code')); ?></span>
+                <input type="text" name="access_code" value="<?= e($formData['access_code']); ?>" placeholder="<?= e(!empty($event['access_code_hash']) ? lang('access_code_keep_placeholder') : 'ABC123'); ?>" data-no-draft>
+                <small class="form-help"><?= e(!empty($event['access_code_hash']) ? lang('access_code_configured_help') : lang('access_code_help')); ?></small>
+                <?php if (!empty($errors['access_code'])): ?><small class="form-error"><?= e($errors['access_code']); ?></small><?php endif; ?>
+            </label>
+
+            <?php if (!empty($event['access_code_hash'])): ?>
+                <label class="form-field checkbox-field">
+                    <input type="checkbox" name="clear_access_code" value="1"<?= checked($formData['clear_access_code']); ?> data-no-draft>
+                    <span><?= e(lang('clear_access_code')); ?></span>
+                </label>
+            <?php endif; ?>
+
             <label class="form-field">
                 <span><?= e(lang('manual_override')); ?></span>
                 <select name="manual_status">

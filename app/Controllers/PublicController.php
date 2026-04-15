@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Models\BroadcastEvent;
 use App\Services\Auth;
+use App\Services\Csrf;
 use App\Services\EventStatusService;
 use App\Services\UploadService;
 use App\Services\YoutubeService;
@@ -28,7 +29,11 @@ class PublicController
 
     public function home(): void
     {
-        $events = array_map(fn (array $event): array => $this->decorate($event), $this->events->allPublished());
+        $publishedEvents = array_values(array_filter(
+            $this->events->allPublished(),
+            fn (array $event): bool => !$this->requiresAccessCode($event) || $this->hasEventAccess($event)
+        ));
+        $events = array_map(fn (array $event): array => $this->decorate($event), $publishedEvents);
 
         usort($events, static fn (array $a, array $b): int => strcmp($a['start_at'], $b['start_at']));
 
@@ -87,10 +92,31 @@ class PublicController
         }
 
         $event = $this->decorate($event);
+        $requiresAccessCode = !$preview && $this->requiresAccessCode($event);
+        $accessGranted = !$requiresAccessCode || $this->hasEventAccess($event);
+        $accessErrors = [];
+
+        if ($requiresAccessCode && !$accessGranted && \is_post()) {
+            if (!Csrf::validate('event_access_' . $event['id'], $_POST['_csrf'] ?? null)) {
+                $accessErrors['code'] = \lang('validation_csrf');
+            } else {
+                $code = trim((string) ($_POST['access_code'] ?? ''));
+
+                if ($this->verifyEventAccessCode($event, $code)) {
+                    $this->grantEventAccess($event);
+                    \redirect(\current_url());
+                }
+
+                $accessErrors['code'] = \lang('invalid_access_code');
+            }
+        }
 
         \render('public/event', [
             'pageTitle' => $event['title'],
             'event' => $event,
+            'requiresAccessCode' => $requiresAccessCode,
+            'accessGranted' => $accessGranted,
+            'accessErrors' => $accessErrors,
             'embedMode' => $this->embedMode(),
         ], $this->layout());
     }
@@ -123,10 +149,8 @@ class PublicController
             ? $this->uploadService->resolveLocalPath((string) $event['local_file_path'])
             : null;
 
-        if ($resolvedLocalPath !== null && is_file($resolvedLocalPath)) {
+        if (($resolvedLocalPath !== null && is_file($resolvedLocalPath)) || !empty($event['download_url'])) {
             $downloadLink = \base_url('download.php?slug=' . urlencode((string) $event['slug']));
-        } elseif (!empty($event['download_url'])) {
-            $downloadLink = \absolute_or_base_url((string) $event['download_url']);
         }
 
         $event['effective_status'] = $status;
@@ -144,6 +168,32 @@ class PublicController
         $event['preview_url'] = \event_public_url($event, true);
 
         return $event;
+    }
+
+    private function requiresAccessCode(array $event): bool
+    {
+        return !$this->auth->isAuthenticated() && !empty($event['access_code_hash']);
+    }
+
+    private function hasEventAccess(array $event): bool
+    {
+        if ($this->auth->isAuthenticated() || empty($event['access_code_hash'])) {
+            return true;
+        }
+
+        return !empty($_SESSION['lsb_event_access'][(int) $event['id']]);
+    }
+
+    private function grantEventAccess(array $event): void
+    {
+        $_SESSION['lsb_event_access'] ??= [];
+        $_SESSION['lsb_event_access'][(int) $event['id']] = true;
+    }
+
+    private function verifyEventAccessCode(array $event, string $code): bool
+    {
+        $hash = (string) ($event['access_code_hash'] ?? '');
+        return $hash !== '' && $code !== '' && password_verify($code, $hash);
     }
 
     private function embedMode(): bool

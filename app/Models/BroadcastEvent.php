@@ -92,11 +92,11 @@ class BroadcastEvent
             'INSERT INTO broadcast_events (
                 title, slug, description, start_at, duration_minutes, timezone,
                 youtube_live_input, youtube_live_video_id, youtube_replay_input, youtube_replay_video_id,
-                download_url, local_file_path, manual_status, is_published, created_at, updated_at
+                download_url, local_file_path, access_code_hash, manual_status, is_published, created_at, updated_at
             ) VALUES (
                 :title, :slug, :description, :start_at, :duration_minutes, :timezone,
                 :youtube_live_input, :youtube_live_video_id, :youtube_replay_input, :youtube_replay_video_id,
-                :download_url, :local_file_path, :manual_status, :is_published, NOW(), NOW()
+                :download_url, :local_file_path, :access_code_hash, :manual_status, :is_published, NOW(), NOW()
             )'
         );
         $statement->execute($payload);
@@ -122,6 +122,7 @@ class BroadcastEvent
                 youtube_replay_video_id = :youtube_replay_video_id,
                 download_url = :download_url,
                 local_file_path = :local_file_path,
+                access_code_hash = :access_code_hash,
                 manual_status = :manual_status,
                 is_published = :is_published,
                 updated_at = NOW()

@@ -71,6 +71,9 @@ defined('LSB_APP') or exit;
                             <td>
                                 <strong><?= e($event['title']); ?></strong>
                                 <div class="muted-text"><?= e($event['slug']); ?></div>
+                                <?php if (!empty($event['access_code_hash'])): ?>
+                                    <div class="muted-text"><?= e(lang('private_access')); ?></div>
+                                <?php endif; ?>
                             </td>
                             <td><span class="badge <?= e($event['status_badge_class']); ?>"><?= e($event['status_label']); ?></span></td>
                             <td><?= e($event['display_start_at']); ?></td>
