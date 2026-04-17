@@ -135,6 +135,35 @@ defined('LSB_APP') or exit;
     </form>
 
     <?php if ($event !== null): ?>
+        <section class="panel panel-spaced youtube-live-panel">
+            <div>
+                <p class="admin-topbar__eyebrow"><?= e(lang('youtube_integration')); ?></p>
+                <h2><?= e(lang('youtube_create_live')); ?></h2>
+                <p class="muted-text"><?= e(lang('youtube_create_live_help')); ?></p>
+            </div>
+
+            <?php if (!$youtubeConfigured): ?>
+                <div class="alert alert-info"><?= e(lang('youtube_config_missing')); ?></div>
+                <a class="button" href="<?= e(base_url('admin/youtube/')); ?>"><?= e(lang('youtube_open_settings')); ?></a>
+            <?php elseif (!$youtubeConnected): ?>
+                <div class="alert alert-info"><?= e(lang('youtube_not_connected')); ?></div>
+                <a class="button button-primary" href="<?= e(base_url('admin/youtube/')); ?>"><?= e(lang('youtube_connect')); ?></a>
+            <?php elseif (!empty($event['youtube_live_video_id'])): ?>
+                <div class="alert alert-success">
+                    <?= e(lang('youtube_live_already_linked')); ?>
+                    <a href="<?= e((string) $event['youtube_live_input']); ?>" target="_blank" rel="noopener"><?= e((string) $event['youtube_live_video_id']); ?></a>
+                </div>
+            <?php else: ?>
+                <form method="post" action="<?= e(base_url('admin/youtube/create-live.php')); ?>" data-confirm="<?= e(lang('youtube_create_live_confirm')); ?>">
+                    <input type="hidden" name="_csrf" value="<?= e(csrf_token('youtube_create_live_' . $event['id'])); ?>">
+                    <input type="hidden" name="id" value="<?= e((string) $event['id']); ?>">
+                    <button class="button button-primary" type="submit"><?= e(lang('youtube_create_live')); ?></button>
+                </form>
+            <?php endif; ?>
+        </section>
+    <?php endif; ?>
+
+    <?php if ($event !== null): ?>
         <form method="post" action="<?= e(base_url('admin/events/delete.php')); ?>" data-confirm="<?= e(lang('confirm_delete')); ?>">
             <input type="hidden" name="_csrf" value="<?= e(csrf_token('delete_event_' . $event['id'])); ?>">
             <input type="hidden" name="id" value="<?= e((string) $event['id']); ?>">

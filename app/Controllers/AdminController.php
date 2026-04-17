@@ -9,9 +9,11 @@ use App\Services\Csrf;
 use App\Services\EventStatusService;
 use App\Services\Flash;
 use App\Services\UploadService;
+use App\Services\YoutubeLiveApiService;
 use App\Services\YoutubeService;
 use DateTimeImmutable;
 use DateTimeZone;
+use RuntimeException;
 
 class AdminController
 {
@@ -19,6 +21,7 @@ class AdminController
     private Auth $auth;
     private EventStatusService $statusService;
     private YoutubeService $youtubeService;
+    private YoutubeLiveApiService $youtubeLiveApiService;
     private UploadService $uploadService;
 
     public function __construct()
@@ -27,6 +30,7 @@ class AdminController
         $this->auth = new Auth();
         $this->statusService = new EventStatusService();
         $this->youtubeService = new YoutubeService();
+        $this->youtubeLiveApiService = new YoutubeLiveApiService();
         $this->uploadService = new UploadService();
     }
 
@@ -146,6 +150,8 @@ class AdminController
             'formData' => $formData,
             'event' => null,
             'timezones' => timezone_identifiers_list(),
+            'youtubeConfigured' => $this->youtubeLiveApiService->isConfigured(),
+            'youtubeConnected' => $this->youtubeLiveApiService->isConnected(),
         ], 'admin');
     }
 
@@ -181,7 +187,122 @@ class AdminController
             'formData' => $formData,
             'event' => $event,
             'timezones' => timezone_identifiers_list(),
+            'youtubeConfigured' => $this->youtubeLiveApiService->isConfigured(),
+            'youtubeConnected' => $this->youtubeLiveApiService->isConnected(),
         ], 'admin');
+    }
+
+    public function youtubeSettings(): void
+    {
+        $this->auth->guardAdmin();
+
+        $channel = null;
+        $connectionError = null;
+
+        if ($this->youtubeLiveApiService->isConfigured() && $this->youtubeLiveApiService->isConnected()) {
+            try {
+                $channel = $this->youtubeLiveApiService->channelInfo();
+            } catch (RuntimeException $exception) {
+                $connectionError = $exception->getMessage();
+            }
+        }
+
+        \render('admin/youtube', [
+            'pageTitle' => \lang('youtube_integration'),
+            'configured' => $this->youtubeLiveApiService->isConfigured(),
+            'connected' => $this->youtubeLiveApiService->isConnected(),
+            'channel' => $channel,
+            'connectionError' => $connectionError,
+            'redirectUri' => $this->youtubeLiveApiService->redirectUri(),
+            'privacyStatus' => (string) \config('youtube.default_privacy_status', 'unlisted'),
+        ], 'admin');
+    }
+
+    public function youtubeConnect(): void
+    {
+        $this->auth->guardAdmin();
+
+        try {
+            $state = bin2hex(random_bytes(24));
+            $_SESSION['lsb_youtube_oauth_state'] = $state;
+            \redirect($this->youtubeLiveApiService->createAuthUrl($state));
+        } catch (RuntimeException $exception) {
+            Flash::add('error', $exception->getMessage());
+            \redirect(\base_url('admin/youtube/'));
+        }
+    }
+
+    public function youtubeCallback(): void
+    {
+        $this->auth->guardAdmin();
+
+        $state = (string) ($_GET['state'] ?? '');
+        $expectedState = (string) ($_SESSION['lsb_youtube_oauth_state'] ?? '');
+        unset($_SESSION['lsb_youtube_oauth_state']);
+
+        if ($state === '' || $expectedState === '' || !hash_equals($expectedState, $state)) {
+            Flash::add('error', \lang('youtube_oauth_invalid_state'));
+            \redirect(\base_url('admin/youtube/'));
+        }
+
+        $code = (string) ($_GET['code'] ?? '');
+        if ($code === '') {
+            Flash::add('error', (string) ($_GET['error'] ?? \lang('youtube_oauth_missing_code')));
+            \redirect(\base_url('admin/youtube/'));
+        }
+
+        try {
+            $this->youtubeLiveApiService->exchangeCode($code);
+            Flash::add('success', \lang('youtube_connected_success'));
+        } catch (RuntimeException $exception) {
+            Flash::add('error', $exception->getMessage());
+        }
+
+        \redirect(\base_url('admin/youtube/'));
+    }
+
+    public function youtubeDisconnect(): void
+    {
+        $this->auth->guardAdmin();
+
+        if (!Csrf::validate('youtube_disconnect', $_POST['_csrf'] ?? null)) {
+            Flash::add('error', \lang('validation_csrf'));
+            \redirect(\base_url('admin/youtube/'));
+        }
+
+        $this->youtubeLiveApiService->disconnect();
+        Flash::add('success', \lang('youtube_disconnected_success'));
+        \redirect(\base_url('admin/youtube/'));
+    }
+
+    public function createYoutubeLive(int $id): void
+    {
+        $this->auth->guardAdmin();
+
+        if (!Csrf::validate('youtube_create_live_' . $id, $_POST['_csrf'] ?? null)) {
+            Flash::add('error', \lang('validation_csrf'));
+            \redirect(\base_url('admin/events/edit/?id=' . $id));
+        }
+
+        $event = $this->events->findById($id);
+        if ($event === null) {
+            \abort(404, \lang('event_not_found'));
+        }
+
+        if (!empty($event['youtube_live_video_id'])) {
+            Flash::add('error', \lang('youtube_live_already_linked'));
+            \redirect(\base_url('admin/events/edit/?id=' . $id));
+        }
+
+        try {
+            $broadcast = $this->youtubeLiveApiService->createLiveBroadcast($event);
+            $this->events->setYoutubeLiveVideo($id, $broadcast['watch_url'], $broadcast['video_id']);
+            Flash::add('success', \lang('youtube_live_created_success', ['id' => $broadcast['video_id']]));
+        } catch (RuntimeException $exception) {
+            Flash::add('error', $exception->getMessage());
+        }
+
+        \redirect(\base_url('admin/events/edit/?id=' . $id));
     }
 
     public function delete(int $id): void

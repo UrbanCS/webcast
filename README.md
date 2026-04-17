@@ -15,6 +15,7 @@ lifstories-broadcast/
 |-- logout.php
 |-- admin/
 |   |-- index.php
+|   |-- youtube/
 |   `-- events/
 |       |-- create/index.php
 |       |-- delete.php
@@ -32,6 +33,7 @@ lifstories-broadcast/
 |   |-- config.php
 |   `-- lang/fr.php
 |-- database/
+|   |-- add-access-code.sql
 |   |-- install.sql
 |   |-- sample-data.sql
 |   `-- schema.sql
@@ -43,6 +45,7 @@ lifstories-broadcast/
 |   |-- project-overview.md
 |   |-- security-notes.md
 |   |-- troubleshooting.md
+|   |-- youtube-integration.md
 |   |-- wordpress-integration.md
 |   `-- snippets/
 |-- public/
@@ -63,6 +66,8 @@ lifstories-broadcast/
 - Automatic statuses with manual override
 - Responsive public pages
 - YouTube Live / replay embed
+- Optional YouTube OAuth connection to create a scheduled live directly from the admin
+- Per-broadcast family access code protection
 - Download button via URL or secure local file
 - Standalone admin login with PHP sessions, password hashing, and rate limiting
 - WordPress/Joomla authentication adapters when CMS bootstrap is configured
@@ -83,6 +88,7 @@ lifstories-broadcast/
 - Joomla integration: `docs/joomla-integration.md`
 - Security notes: `docs/security-notes.md`
 - Troubleshooting: `docs/troubleshooting.md`
+- YouTube integration: `docs/youtube-integration.md`
 - Deployment checklist: `docs/deployment-checklist.md`
 
 ## Design Decisions

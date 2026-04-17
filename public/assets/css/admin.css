@@ -285,6 +285,27 @@ a {
     margin-top: 0.9rem;
 }
 
+.config-card {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.74);
+}
+
+.config-card code {
+    display: block;
+    overflow-x: auto;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    background: rgba(31, 41, 51, 0.06);
+}
+
+.youtube-live-panel {
+    background: rgba(255, 255, 255, 0.58);
+}
+
 .muted-text,
 .auth-note,
 .form-help {

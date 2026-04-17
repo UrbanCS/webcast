@@ -146,4 +146,21 @@ class BroadcastEvent
             'published' => $published ? 1 : 0,
         ]);
     }
+
+    public function setYoutubeLiveVideo(int $id, string $input, string $videoId): bool
+    {
+        $statement = $this->db->prepare(
+            'UPDATE broadcast_events
+             SET youtube_live_input = :input,
+                 youtube_live_video_id = :video_id,
+                 updated_at = NOW()
+             WHERE id = :id'
+        );
+
+        return $statement->execute([
+            'id' => $id,
+            'input' => $input,
+            'video_id' => $videoId,
+        ]);
+    }
 }

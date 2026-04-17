@@ -35,6 +35,13 @@ return [
             'login_url' => '',
         ],
     ],
+    'youtube' => [
+        'client_id' => '',
+        'client_secret' => '',
+        'redirect_uri' => '',
+        'token_path' => 'storage/youtube/oauth-token.json',
+        'default_privacy_status' => 'unlisted',
+    ],
     'security' => [
         'csrf_ttl' => 7200,
         'same_site' => 'Lax',

@@ -8,6 +8,8 @@
 !/storage/logs/.gitkeep
 /storage/uploads/*
 !/storage/uploads/.gitkeep
+/storage/youtube/*
+!/storage/youtube/.gitkeep
 
 # Optional public uploads
 /public/assets/uploads/*

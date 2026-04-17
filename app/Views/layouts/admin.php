@@ -24,6 +24,7 @@ $flashMessages = flash_messages();
             <nav class="admin-sidebar__nav" aria-label="Navigation administrateur">
                 <a href="<?= e(base_url('admin.php')); ?>"><?= e(lang('dashboard')); ?></a>
                 <a href="<?= e(base_url('admin/events/create/')); ?>"><?= e(lang('create_event')); ?></a>
+                <a href="<?= e(base_url('admin/youtube/')); ?>"><?= e(lang('youtube_integration')); ?></a>
                 <a href="<?= e(base_url()); ?>" target="_blank" rel="noopener"><?= e(lang('public_site')); ?></a>
                 <a href="<?= e(base_url('logout.php')); ?>"><?= e(lang('logout')); ?></a>
             </nav>
